@@ -4,39 +4,53 @@ var order = 1;
 // array containing the points of the snowflake
 var points = undefined;
 
+// resets the drawing canvas and the points array.
+function reset() {
+    if (order > 1) {
+        order = 1;
+        points = null;
+        document.getElementById("message").innerHTML = "<br>";
+        var canvas = document.getElementById("snowflakeCanvas");
+        if (canvas.getContext) {
+            canvas.width = canvas.width;
+            canvas.getContext("2d").clearRect(0, 0, 500, 500);
+            // console.log("order: " + order);
+            // console.log(points.length);
+        }
+    }
+
+}
+
 // connect points in the points array
 function draw() {
+    console.log("drawing snowflake of order " + order);
+    console.log(points);
 
     var canvas = document.getElementById("snowflakeCanvas");
 
     if (canvas.getContext) {
         var ctx = canvas.getContext("2d");
 
-        // get color
-        // var colorPicker = document.getElementById("snowflakeColor");
-        // var color = colorPicker.val(); // ???
+        // get colors for stroke and fill
+        var strokeColorPicker = document.getElementById("snowflakeColor");
+        var fillColorPicker = document.getElementById("fillColor");
+        // console.log(colorPicker.value);
 
         // set color
-        ctx.strokeStyle = "#0000FF";
-        ctx.fillStyle = "#FFFFFF";
+        ctx.strokeStyle = strokeColorPicker.value;
+        ctx.fillStyle = fillColorPicker.value;
 
         // set drawing area side length and calculate parameters
         sideLength = canvas.offsetWidth;
         mid = sideLength / 2;
         d = 0.8 * mid; // half of a side of the initial triangle
 
-        // debugging
-        // var debug = document.getElementById("debug");
-        // debug.innerHTML = "sideLength: " + sideLength + "<br>";
-        // debug.innerHTML += "midpoint: " + mid + "<br>";
-
         // create new points
         if (order > 7) {
-            debug.innerHTML = "Maximum order reached!<br>";
+            document.getElementById("message").innerHTML = "Maximum complexity reached! Let's not crash your browser...<br>";
         } else {
             grow(mid, d);
 
-            //console.log(points.length);
             // draw lines connecting points
             ctx.moveTo(points[0].x, points[0].y);
             for (i = 1; i < points.length; i++) {
@@ -96,7 +110,7 @@ function divide(a, b) {
     // line intersecting a and b
     arr[1] = new Point(eval(a.x + (b.x - a.x) * 1.0 / 3.0), eval(a.y + (b.y - a.y) * 1.0 / 3.0));
     arr[3] = new Point(eval(a.x + (b.x - a.x) * 2.0 / 3.0), eval(a.y + (b.y - a.y) * 2.0 / 3.0));
-    // point 2 is the new hill. looking from the midpoint of a and b, it is always reached by turning left.
+    // point 2 is the new "hill". looking from the midpoint of a and b, it is always reached by turning left.
     xm = (a.x + b.x) / 2.0;
     ym = (a.y + b.y) / 2.0;
 
@@ -118,6 +132,7 @@ function Point(x, y) {
     this.y = y;
 }
 
+// for debugging
 Point.prototype.toString = function() {
     return "x: " + this.x + ", y: " + this.y;
 }

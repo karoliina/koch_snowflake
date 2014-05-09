@@ -17,25 +17,28 @@
 
     <div id="header">
         <h1>Koch Snowflake</h1>
-        <p><a href="http://en.wikipedia.org/wiki/Koch_snowflake">Wikipedia</a></p>
-        <p id="debug"></p>
+        <p><a href="http://en.wikipedia.org/wiki/Koch_snowflake">Wikipedia</a>
+        </p>
+        <p id="message"><br></p>
+    </div>
+
+    <div id="controls">
+        Select outline color: 
+        <input type="color" name="snowflakeColor" id="snowflakeColor"><br>
+        Select fill color:
+        <input type="color" name="fillColor" id="fillColor"><br>
+        (input a HTML color code if color picker does not appear)<br>
+        <input type="submit" value="Next" onClick="draw()">
+        <input type="submit" value="Reset" onClick="reset()">
     </div>
 
     <div id="snowflake">
         <canvas id="snowflakeCanvas" width="500" height="500">
-            <!-- snowflake goes here -->
+            <!-- snowflake is displayed here -->
             Your browser does not support the Canvas tag of HTML5. Please upgrade your browser to view the snowflake.
         </canvas>
     </div>
 
-    <div id="controls">
-        <!--        <form name="nextOrder" action="" method=""> -->
-            <!-- TODO: action and method attributes -->
-            Select color of snowflake:
-            <input type="color" name="snowflakeColor" id="snowflakeColor">
-            <input type="submit" value="Next" onClick="draw()">
-            <!--        </form> -->
-    </div>
 </body>
 
 </html>
