@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <meta name="keywords" content="Koch, Snowflake, Javascript, programming" charset="utf-8">
+    <script src="koch.js"></script>
+    <!--    <base href="http://www.karoliinaoksanen.com">-->
+    <title>Koch Snowflake</title>
+</head>
+
+<body>
+    <div id="nav">
+        <a href="/">Home</a>
+        <a href="main.css">test</a>
+    </div>
+
+    <div id="header">
+        <h1>Koch Snowflake</h1>
+        <p><a href="http://en.wikipedia.org/wiki/Koch_snowflake">Wikipedia</a></p>
+        <p id="debug"></p>
+    </div>
+
+    <div id="snowflake">
+        <canvas id="snowflakeCanvas" width="500" height="500">
+            <!-- snowflake goes here -->
+            Your browser does not support the Canvas tag of HTML5. Please upgrade your browser to view the snowflake.
+        </canvas>
+    </div>
+
+    <div id="controls">
+        <!--        <form name="nextOrder" action="" method=""> -->
+            <!-- TODO: action and method attributes -->
+            Select color of snowflake:
+            <input type="color" name="snowflakeColor" id="snowflakeColor">
+            <input type="submit" value="Next" onClick="draw()">
+            <!--        </form> -->
+    </div>
+</body>
+
+</html>
