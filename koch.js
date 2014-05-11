@@ -2,30 +2,24 @@
 var order = 1;
 
 // array containing the points of the snowflake
-var points = undefined;
+var points;
 
 // resets the drawing canvas and the points array.
 function reset() {
     if (order > 1) {
         order = 1;
-        points = null;
+        points = undefined;
         document.getElementById("message").innerHTML = "<br>";
         var canvas = document.getElementById("snowflakeCanvas");
         if (canvas.getContext) {
             canvas.width = canvas.width;
             canvas.getContext("2d").clearRect(0, 0, 500, 500);
-            // console.log("order: " + order);
-            // console.log(points.length);
         }
     }
-
 }
 
 // connect points in the points array
 function draw() {
-    console.log("drawing snowflake of order " + order);
-    console.log(points);
-
     var canvas = document.getElementById("snowflakeCanvas");
 
     if (canvas.getContext) {
@@ -34,16 +28,15 @@ function draw() {
         // get colors for stroke and fill
         var strokeColorPicker = document.getElementById("snowflakeColor");
         var fillColorPicker = document.getElementById("fillColor");
-        // console.log(colorPicker.value);
 
         // set color
         ctx.strokeStyle = strokeColorPicker.value;
         ctx.fillStyle = fillColorPicker.value;
 
         // set drawing area side length and calculate parameters
-        sideLength = canvas.offsetWidth;
-        mid = sideLength / 2;
-        d = 0.8 * mid; // half of a side of the initial triangle
+        var sideLength = canvas.offsetWidth;
+        var mid = sideLength / 2;
+        var d = 0.8 * mid; // half of a side of the initial triangle
 
         // create new points
         if (order > 7) {
@@ -69,6 +62,7 @@ function draw() {
 function grow(mid, d) {
     // new temporary array for endpoints
     var tmp = new Array(numPoints(order));
+    var segment; // array for new points created by divide()
 
     // create points. a point is represented by an
     // object with the properties x and y.
@@ -80,6 +74,11 @@ function grow(mid, d) {
         var k = 0;
         for (i = 0; i < points.length - 1; i++) {
             // get new points of each segment and copy them into tmp array
+            //
+            // note: this would be faster if the code for divide() was simply
+            // included in this function (no deep copying of new points from 
+            // arrays returned by divide() to tmp) but it's fast enough now and
+            // the code looks cleaner
             segment = divide(points[i], points[i + 1]);
             for (j = 0; j < segment.length; j++) {
                 tmp[k] = segment[j];
@@ -101,21 +100,21 @@ function grow(mid, d) {
 // length of a segment.
 function divide(a, b) {
     // calculate distance between a and b and other parameters
-    len = Math.sqrt(Math.pow(b.y - a.y, 2) + Math.pow(b.x - a.x, 2));
-    h = Math.sqrt(3) / 6.0 * len;
+    var len = Math.sqrt(Math.pow(b.y - a.y, 2) + Math.pow(b.x - a.x, 2));
+    var h = Math.sqrt(3) / 6.0 * len;
 
-    arr = new Array(4);
+    var arr = new Array(4);
     arr[0] = a; // point a
     // compute x and y coordinates of points a1 and a3 by using a parametric equation of a
     // line intersecting a and b
     arr[1] = new Point(eval(a.x + (b.x - a.x) * 1.0 / 3.0), eval(a.y + (b.y - a.y) * 1.0 / 3.0));
     arr[3] = new Point(eval(a.x + (b.x - a.x) * 2.0 / 3.0), eval(a.y + (b.y - a.y) * 2.0 / 3.0));
     // point 2 is the new "hill". looking from the midpoint of a and b, it is always reached by turning left.
-    xm = (a.x + b.x) / 2.0;
-    ym = (a.y + b.y) / 2.0;
+    var xm = (a.x + b.x) / 2.0;
+    var ym = (a.y + b.y) / 2.0;
 
     // compute point 2 using the normal vector to the left looking from point a, and the parameter h.
-    t = h / Math.sqrt(Math.pow(b.y - a.y, 2) + Math.pow(b.x - a.x, 2));
+    var t = h / Math.sqrt(Math.pow(b.y - a.y, 2) + Math.pow(b.x - a.x, 2));
     arr[2] = new Point(xm + t * (b.y - a.y), ym + t * (a.x - b.x));
 
     return arr;
